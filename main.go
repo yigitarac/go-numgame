@@ -43,11 +43,3 @@ func numGenerator(zorluk int) (generatedNum int) {
 	generatedNum = rand.Intn(uzunluk) + 1
 	return generatedNum
 }
-
-func leaderboard() {
-	fmt.Println("blabla") // şimdilik
-}
-
-func game(num int, zorluk int, userName string) {
-
-}
