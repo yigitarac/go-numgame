@@ -7,6 +7,7 @@ import (
 	"math/rand"
 	"os"
 	"path/filepath"
+	"sort"
 	"strconv"
 )
 
@@ -38,7 +39,12 @@ func main() {
 			game(generatedNum, boyut, hak, katSayi, username)
 		}
 	} else {
-		leaderboard()
+		path, err := os.UserHomeDir()
+		if err != nil {
+			fmt.Println("Home dizini bulunamadı")
+			return
+		}
+		leaderboard(path)
 	}
 }
 
@@ -50,8 +56,25 @@ func numGenerator(zorluk int) (generatedNum int, boyut int, hak int, carpan int)
 	return generatedNum, uzunluk, tahminHakki, katSayi
 }
 
-func leaderboard() {
-	fmt.Println("blabla") // şimdilik
+func leaderboard(yol string) {
+	dosya := filepath.Join(yol, ".numgame_scoreboard.json")
+	okunanOyuncular, err := os.ReadFile(dosya)
+	if err != nil {
+		fmt.Println("Dosya okunamadı.")
+		return
+	}
+	var gamer []Player
+	err = json.Unmarshal(okunanOyuncular, &gamer)
+	sort.Slice(gamer, func(i, j int) bool {
+		if gamer[i].Score > gamer[j].Score {
+			return true
+		} else {
+			return false
+		}
+	})
+	for i := range gamer {
+		fmt.Printf("%d. %s - Skor: %d", (i + 1), gamer[i].Nickname, gamer[i].Score)
+	}
 }
 
 func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
@@ -77,6 +100,7 @@ func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
 			path, err := os.UserHomeDir()
 			if err != nil {
 				fmt.Println("Home dizini bulunamadı.")
+				return
 			}
 			oyunuKaydet(gamer, path)
 			return
@@ -97,6 +121,7 @@ func oyunuKaydet(oyuncu Player, yol string) {
 
 		} else {
 			fmt.Println("Dosya içeriği okunamadı")
+			return
 		}
 	}
 	var gamer []Player
