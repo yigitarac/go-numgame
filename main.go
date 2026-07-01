@@ -48,7 +48,7 @@ func leaderboard() {
 }
 
 func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
-	fmt.Printf("1-%d arasında bir sayı tuttum. Tahmin et!\n", zorluk)
+	fmt.Printf("1-%d arasında bir sayı tuttum. %d Adet hakkın var. Tahmin et!\n", zorluk, tahminHakki)
 	for i := 1; i <= tahminHakki; i++ {
 		var tahmin int
 		_, err := fmt.Scan(&tahmin)
@@ -63,12 +63,12 @@ func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
 			} else {
 				score = katSayi
 			}
-			fmt.Printf("Tebrikler! %d. tahmininizde doğru bildiniz. Puanınız -> %d", i, score)
+			fmt.Printf("Tebrikler! %d. tahmininizde doğru bildiniz. Puanınız -> %d\n", i, score)
 			return
 		} else if tahmin > num {
-			fmt.Println("Girdiğiniz sayı çok büyük.")
+			fmt.Printf("Girdiğiniz sayı çok büyük. %d Adet hakkınız kaldı.", (tahminHakki - i))
 		} else {
-			fmt.Println("Girdiğiniz sayı çok küçük.")
+			fmt.Printf("Girdiğiniz sayı çok küçük. %d Adet hakkınız kaldı.", (tahminHakki - i))
 		}
 	}
 	fmt.Printf("Maalesef sayıyı bilemedin. Tuttuğum sayı %d idi", num)
