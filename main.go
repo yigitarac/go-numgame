@@ -14,8 +14,8 @@ func main() {
 		fmt.Println("numgame list")
 		return
 	} else if len(os.Args) == 3 {
-		// username := os.Args[2] şimdilik
-		fmt.Println("Zorluk seçin lütfen\n1) Kolay (1-25 | 1 Katsayı)\n2) Orta (1-50 | 3 Katsayı)\n3) Zor (1-75 | 5 Katsayı)")
+		username := os.Args[2]
+		fmt.Println("Zorluk seçin lütfen\n1) Kolay (1-25 | 2 Katsayı)\n2) Orta (1-50 | 4 Katsayı)\n3) Zor (1-75 | 6 Katsayı)")
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
 		if len(scanner.Text()) != 1 {
@@ -28,7 +28,8 @@ func main() {
 					fmt.Println("Sayı metine dönüştürülemedi")
 					return
 				}
-				// generatedNum := numGenerator(zorluk) şimdilik
+				generatedNum, boyut, hak, katSayi := numGenerator(zorluk)
+				game(generatedNum, boyut, hak, katSayi, username)
 			} else {
 				fmt.Println("Hatalı giriş")
 			}
@@ -38,8 +39,41 @@ func main() {
 	}
 }
 
-func numGenerator(zorluk int) (generatedNum int) {
+func numGenerator(zorluk int) (generatedNum int, boyut int, hak int, carpan int) {
 	uzunluk := (zorluk * 25)
 	generatedNum = rand.Intn(uzunluk) + 1
-	return generatedNum
+	tahminHakki := rand.Intn(zorluk*2) + 3
+	katSayi := (zorluk * 2)
+	return generatedNum, uzunluk, tahminHakki, katSayi
+}
+
+func leaderboard() {
+	fmt.Println("blabla") // şimdilik
+}
+
+func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
+	fmt.Printf("1-%d arasında bir sayı tuttum. Tahmin et!\n", zorluk)
+	for i := 1; i <= tahminHakki; i++ {
+		var tahmin int
+		_, err := fmt.Scan(&tahmin)
+		if err != nil {
+			fmt.Println("Geçersiz giriş yaptınız.")
+			return
+		}
+		if tahmin == num {
+			var score int
+			if i != tahminHakki {
+				score = katSayi * (tahminHakki - i)
+			} else {
+				score = katSayi
+			}
+			fmt.Printf("Tebrikler! %d. tahmininizde doğru bildiniz. Puanınız -> %d", i, score)
+			break
+		} else if tahmin > num {
+			fmt.Println("Girdiğiniz sayı çok büyük.")
+		} else {
+			fmt.Println("Girdiğiniz sayı çok küçük.")
+		}
+	}
+	fmt.Printf("Maalesef sayıyı bilemedin. Tuttuğum sayı %d idi", num)
 }
