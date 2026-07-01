@@ -8,6 +8,11 @@ import (
 	"strconv"
 )
 
+type Player struct {
+	Nickname string
+	Score    int
+}
+
 func main() {
 	if len(os.Args) > 3 || len(os.Args) < 2 {
 		fmt.Println("numgame new <username>")
@@ -64,6 +69,10 @@ func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
 				score = katSayi
 			}
 			fmt.Printf("Tebrikler! %d. tahmininizde doğru bildiniz. Puanınız -> %d\n", i, score)
+			var gamer Player
+			gamer.Nickname = userName
+			gamer.Score = score
+			oyunuKaydet(gamer)
 			return
 		} else if tahmin > num {
 			fmt.Printf("Girdiğiniz sayı çok büyük. %d Adet hakkınız kaldı.", (tahminHakki - i))
@@ -72,4 +81,8 @@ func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
 		}
 	}
 	fmt.Printf("Maalesef sayıyı bilemedin. Tuttuğum sayı %d idi", num)
+}
+
+func oyunuKaydet(oyuncu Player) {
+
 }
