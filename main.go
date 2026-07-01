@@ -73,7 +73,7 @@ func leaderboard(yol string) {
 		}
 	})
 	for i := range gamer {
-		fmt.Printf("%d. %s - Skor: %d", (i + 1), gamer[i].Nickname, gamer[i].Score)
+		fmt.Printf("%d. %s - Skor: %d\n", (i + 1), gamer[i].Nickname, gamer[i].Score)
 	}
 }
 
@@ -104,13 +104,13 @@ func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
 			}
 			oyunuKaydet(gamer, path)
 			return
-		} else if tahmin > num {
-			fmt.Printf("Girdiğiniz sayı çok büyük. %d Adet hakkınız kaldı.", (tahminHakki - i))
-		} else {
-			fmt.Printf("Girdiğiniz sayı çok küçük. %d Adet hakkınız kaldı.", (tahminHakki - i))
+		} else if tahmin > num && (tahminHakki-i) != 0 {
+			fmt.Printf("Girdiğiniz sayı çok büyük. %d Adet hakkınız kaldı.\n", (tahminHakki - i))
+		} else if tahmin < num && (tahminHakki-i) != 0 {
+			fmt.Printf("Girdiğiniz sayı çok küçük. %d Adet hakkınız kaldı.\n", (tahminHakki - i))
 		}
 	}
-	fmt.Printf("Maalesef sayıyı bilemedin. Tuttuğum sayı %d idi", num)
+	fmt.Printf("Maalesef sayıyı bilemedin. Tuttuğum sayı %d idi\n", num)
 }
 
 func oyunuKaydet(oyuncu Player, yol string) {
