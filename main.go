@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -72,7 +74,11 @@ func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
 			var gamer Player
 			gamer.Nickname = userName
 			gamer.Score = score
-			oyunuKaydet(gamer)
+			path, err := os.UserHomeDir()
+			if err != nil {
+				fmt.Println("Home dizini bulunamadı.")
+			}
+			oyunuKaydet(gamer, path)
 			return
 		} else if tahmin > num {
 			fmt.Printf("Girdiğiniz sayı çok büyük. %d Adet hakkınız kaldı.", (tahminHakki - i))
@@ -83,6 +89,19 @@ func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
 	fmt.Printf("Maalesef sayıyı bilemedin. Tuttuğum sayı %d idi", num)
 }
 
-func oyunuKaydet(oyuncu Player) {
+func oyunuKaydet(oyuncu Player, yol string) {
+	dosya := filepath.Join(yol, ".numgame_scoreboard.json")
+	dosyaIcerigi, err := os.ReadFile(dosya)
+	if err != nil {
+		if os.IsNotExist(err) {
 
+		} else {
+			fmt.Println("Dosya içeriği okunamadı")
+		}
+	}
+	var gamer []Player
+	err = json.Unmarshal(dosyaIcerigi, &gamer)
+	gamer = append(gamer, oyuncu)
+	eklenmisDosya, err := json.Marshal(gamer)
+	os.WriteFile(dosya, eklenmisDosya, 0644)
 }
