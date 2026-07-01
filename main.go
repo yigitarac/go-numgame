@@ -22,17 +22,13 @@ func main() {
 			fmt.Println("Hatalı giriş!")
 			return
 		} else {
-			if len(scanner.Text()) == 1 {
-				zorluk, err := strconv.Atoi(scanner.Text())
-				if err != nil {
-					fmt.Println("Sayı metine dönüştürülemedi")
-					return
-				}
-				generatedNum, boyut, hak, katSayi := numGenerator(zorluk)
-				game(generatedNum, boyut, hak, katSayi, username)
-			} else {
-				fmt.Println("Hatalı giriş")
+			zorluk, err := strconv.Atoi(scanner.Text())
+			if err != nil {
+				fmt.Println("Sayı metine dönüştürülemedi")
+				return
 			}
+			generatedNum, boyut, hak, katSayi := numGenerator(zorluk)
+			game(generatedNum, boyut, hak, katSayi, username)
 		}
 	} else {
 		leaderboard()
@@ -68,7 +64,7 @@ func game(num int, zorluk int, tahminHakki int, katSayi int, userName string) {
 				score = katSayi
 			}
 			fmt.Printf("Tebrikler! %d. tahmininizde doğru bildiniz. Puanınız -> %d", i, score)
-			break
+			return
 		} else if tahmin > num {
 			fmt.Println("Girdiğiniz sayı çok büyük.")
 		} else {
